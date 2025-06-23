@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Happy Birthday!</title>
+  <style>
+    :root {
+      --romantic-bg: #ffe6f0;
+      --romantic-pink: #ff69b4;
+      --romantic-purple: #b266ff;
+      --romantic-yellow: #fff8dc;
+      --romantic-red: #ff4d6d;
+      --romantic-blue: #8ecae6;
+      --romantic-heart: #ff4d6d;
+      --romantic-green: #a3f7bf;
+      --romantic-orange: #ffb347;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 1s;
+      font-family: 'Segoe UI', sans-serif;
+      overflow-x: hidden;
+    }
+    .center-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      z-index: 100;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 5vh;
+      pointer-events: auto;
+    }
+    .btn {
+      padding: 1em 2em;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 30px;
+      background: var(--romantic-pink);
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(255,105,180,0.2);
+      margin-top: 1em;
+      transition: background 0.3s, transform 0.2s;
+      z-index: 101;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+    }
+    .btn:hover {
+      background: var(--romantic-purple);
+      transform: scale(1.05);
+    }
+    .hidden {
+      display: none;
+    }
+    /* Decorations */
+    .decorations {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+    /* Bunting */
+    .bunting {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 80px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .flag {
+      width: 40px;
+      height: 40px;
+      background: var(--romantic-pink);
+      clip-path: polygon(50% 100%, 0 0, 100% 0);
+      margin: 0 5px;
+      box-shadow: 0 2px 8px rgba(255,105,180,0.15);
+      animation: swing 2s infinite alternate;
+    }
+    .flag:nth-child(2) { background: var(--romantic-purple); animation-delay: 0.2s;}
+    .flag:nth-child(3) { background: var(--romantic-yellow); animation-delay: 0.4s;}
+    .flag:nth-child(4) { background: var(--romantic-red); animation-delay: 0.6s;}
+    .flag:nth-child(5) { background: var(--romantic-blue); animation-delay: 0.8s;}
+    .flag:nth-child(6) { background: var(--romantic-green); animation-delay: 1s;}
+    .flag:nth-child(7) { background: var(--romantic-orange); animation-delay: 1.2s;}
+    @keyframes swing {
+      0% { transform: rotate(-8deg);}
+      100% { transform: rotate(8deg);}
+    }
+    /* Confetti */
+    .confetti {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .confetti-piece {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: confetti-fall 4s linear infinite;
+    }
+    @keyframes confetti-fall {
+      0% { transform: translateY(-20vh) rotate(0deg);}
+      100% { transform: translateY(110vh) rotate(360deg);}
+    }
+    /* Hearts */
+    .hearts {
+      position: fixed;
+      bottom: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 11;
+    }
+    .heart {
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      left: 50%;
+      bottom: 0;
+      opacity: 0.7;
+      animation: heart-float 5s linear infinite;
+    }
+    .heart-shape {
+      width: 32px;
+      height: 32px;
+      background: var(--romantic-heart);
+      position: absolute;
+      left: 0; top: 0;
+      transform: rotate(-45deg);
+    }
+    .heart-shape::before,
+    .heart-shape::after {
+      content: "";
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      background: var(--romantic-heart);
+      border-radius: 50%;
+    }
+    .heart-shape::before {
+      top: -16px;
+      left: 0;
+    }
+    .heart-shape::after {
+      left: 16px;
+      top: 0;
+    }
+    @keyframes heart-float {
+      0% { transform: translateY(0) scale(1);}
+      80% { opacity: 0.7;}
+      100% { transform: translateY(-90vh) scale(1.2); opacity: 0;}
+    }
+    /* Sparkles */
+    .sparkle {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: radial-gradient(circle, #fff 60%, #ffe6f0 100%);
+      border-radius: 50%;
+      opacity: 0.7;
+      animation: sparkle-blink 2s infinite;
+    }
+    @keyframes sparkle-blink {
+      0%, 100% { opacity: 0.7;}
+      50% { opacity: 0.2;}
+    }
+    /* Animated Balloons SVG */
+    .svg-balloons {
+      position: absolute;
+      left: 0;
+      top: 18vh;
+      width: 100vw;
+      height: 40vh;
+      pointer-events: none;
+      z-index: 3;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      transition: all 1.2s cubic-bezier(.77,0,.18,1);
+    }
+    .svg-balloons svg {
+      width: 90px;
+      height: 160px;
+      margin: 0 10px;
+      overflow: visible;
+      animation: balloon-float 4s ease-in-out infinite alternate;
+      transition: transform 2.5s cubic-bezier(.77,0,.18,1);
+    }
+    .svg-balloons svg:nth-child(2) { animation-delay: 1s;}
+    .svg-balloons svg:nth-child(3) { animation-delay: 2s;}
+    .svg-balloons svg:nth-child(4) { animation-delay: 1.5s;}
+    .svg-balloons svg:nth-child(5) { animation-delay: 2.5s;}
+    .svg-balloons svg:nth-child(6) { animation-delay: 0.7s;}
+    .svg-balloons svg:nth-child(7) { animation-delay: 1.8s;}
+    @keyframes balloon-float {
+      0% { transform: translateY(0);}
+      100% { transform: translateY(-30px);}
+    }
+    .svg-balloons.split svg.left {
+      animation: balloon-move-left 2.5s cubic-bezier(.77,0,.18,1) forwards;
+    }
+    .svg-balloons.split svg.right {
+      animation: balloon-move-right 2.5s cubic-bezier(.77,0,.18,1) forwards;
+    }
+    @keyframes balloon-move-left {
+      0% { transform: none; }
+      100% { transform: translateX(-40vw) scale(0.9) rotate(-10deg);}
+    }
+    @keyframes balloon-move-right {
+      0% { transform: none; }
+      100% { transform: translateX(40vw) scale(0.9) rotate(10deg);}
+    }
+    /* Romantic Glow */
+    .romantic-glow {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      background: radial-gradient(circle at 60% 30%, #ffb6d5 0%, #ffe6f0 40%, transparent 80%);
+      opacity: 0.7;
+      animation: glow-pulse 3s infinite alternate;
+    }
+    @keyframes glow-pulse {
+      0% { opacity: 0.7;}
+      100% { opacity: 1;}
+    }
+    /* Typewriter Message */
+    .typewriter-message {
+      position: absolute;
+      left: 50%;
+      top: 8vh;
+      transform: translateX(-50%);
+      font-size: 2.2em;
+      color: var(--romantic-red);
+      font-weight: bold;
+      text-shadow: 0 2px 8px #fff8, 0 0 20px #ffb6d5;
+      z-index: 20;
+      letter-spacing: 2px;
+      text-align: center;
+      pointer-events: none;
+      white-space: pre;
+      overflow: hidden;
+      border-right: 3px solid var(--romantic-pink);
+      width: 0;
+      opacity: 0;
+      animation: fadeIn 0.5s forwards;
+      min-height: 1.2em;
+      transition: border-right 0.2s;
+    }
+    .personal-message {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%,-50%);
+      width: 90vw;
+      max-width: 600px;
+      font-size: 1.3em;
+      color: var(--romantic-purple);
+      background: rgba(255,255,255,0.85);
+      border-radius: 24px;
+      box-shadow: 0 8px 32px #ffb6d555;
+      padding: 2em 1.5em;
+      text-align: center;
+      z-index: 30;
+      letter-spacing: 1px;
+      line-height: 1.6;
+      white-space: pre-line;
+      opacity: 0;
+      overflow: hidden;
+      border: none;
+      font-weight: 500;
+      transition: opacity 0.5s;
+    }
+    /* Cake Button */
+    .cake-btn-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 5vh;
+      z-index: 200;
+      pointer-events: auto;
+    }
+    .cake-btn {
+      padding: 1em 2em;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 30px;
+      background: var(--romantic-pink);
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(255,105,180,0.2);
+      margin-top: 1em;
+      transition: background 0.3s, transform 0.2s;
+      z-index: 201;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      opacity: 0;
+      animation: fadeIn 0.5s 0.2s forwards;
+      margin: auto;
+    }
+    .cake-btn:hover {
+      background: var(--romantic-purple);
+      color: #fff;
+      transform: scale(1.05);
+    }
+    @media (max-width: 600px) {
+      .btn, .cake-btn {
+        font-size: 1em;
+        padding: 0.8em 1.2em;
+      }
+      .flag { width: 24px; height: 24px;}
+      .bunting { height: 40px;}
+      .heart, .heart-shape, .heart-shape::before, .heart-shape::after { width: 18px; height: 18px;}
+      .svg-balloons svg { width: 50px; height: 90px; }
+      .typewriter-message { font-size: 1.1em; }
+      .personal-message { font-size: 1em; padding: 1.2em 0.7em;}
+    }
+  </style>
+</head>
+<body>
+  <!-- Make sure your music file is named 'music.mp3' and is in the same folder as this HTML file -->
+  <audio id="bdayMusic" src="music.mp3"></audio>
+  <div class="center-content" id="mainContent">
+    <button id="turnOnBtn" class="btn">Turn On Lights</button>
+    <button id="decorateBtn" class="btn hidden">Decorate</button>
+    <button id="celebrateBtn" class="btn hidden">Let's Celebrate!</button>
+    <button class="btn hidden" id="surpriseBtn">Surprise</button>
+  </div>
+  <div class="decorations hidden" id="decorations">
+    <div class="romantic-glow"></div>
+    <div class="bunting">
+      <div class="flag"></div>
+      <div class="flag"></div>
+      <div class="flag"></div>
+      <div class="flag"></div>
+      <div class="flag"></div>
+      <div class="flag"></div>
+      <div class="flag"></div>
+    </div>
+    <div class="svg-balloons" id="svgBalloons">
+      <!-- SVG Balloons will be injected here -->
+    </div>
+    <div class="confetti" id="confetti"></div>
+    <div class="hearts" id="hearts"></div>
+    <div class="typewriter-message hidden" id="typewriterMessage"></div>
+    <div class="personal-message hidden" id="personalMessage"></div>
+    <div class="cake-btn-container hidden" id="cakeBtnContainer">
+      <button class="cake-btn btn" id="cakeBtn">🎂 Cake</button>
+      <button class="btn hidden" id="lightCandleBtn">Light the Candle</button>
+      <button class="btn hidden" id="cutCakeBtn">Cut the Cake</button>
+    </div>
+    <!-- Cake scene: appears in place of message, not overlapping -->
+    <div class="cake-scene hidden" id="cakeScene" style="position:fixed;left:0;top:0;width:100vw;height:100vh;z-index:300;display:flex;align-items:center;justify-content:center;flex-direction:column;">
+      <div id="cakeSvgContainer"></div>
+      <div id="finalMsg" class="hidden" style="margin-top:2em;font-size:1.5em;color:var(--romantic-purple);font-weight:bold;text-align:center;"></div>
+    </div>
+  </div>
+  <script>
+    const turnOnBtn = document.getElementById('turnOnBtn');
+    const decorateBtn = document.getElementById('decorateBtn');
+    const celebrateBtn = document.getElementById('celebrateBtn');
+    const surpriseBtn = document.getElementById('surpriseBtn');
+    const decorations = document.getElementById('decorations');
+    const confetti = document.getElementById('confetti');
+    const hearts = document.getElementById('hearts');
+    const svgBalloons = document.getElementById('svgBalloons');
+    const typewriterMessage = document.getElementById('typewriterMessage');
+    const personalMessage = document.getElementById('personalMessage');
+    const cakeBtnContainer = document.getElementById('cakeBtnContainer');
+    const cakeBtn = document.getElementById('cakeBtn');
+    const bdayMusic = document.getElementById('bdayMusic');
+
+    // Confetti colors
+    const confettiColors = [
+      'var(--romantic-pink)', 'var(--romantic-purple)', 'var(--romantic-yellow)', 
+      'var(--romantic-red)', 'var(--romantic-blue)', 'var(--romantic-green)', 'var(--romantic-orange)', '#fff'
+    ];
+
+    // SVG Balloons (with highlights and strings)
+    const balloonSVGs = [
+      { color: 'var(--romantic-pink)' },
+      { color: 'var(--romantic-purple)' },
+      { color: 'var(--romantic-yellow)' },
+      { color: 'var(--romantic-red)' },
+      { color: 'var(--romantic-blue)' },
+      { color: 'var(--romantic-green)' },
+      { color: 'var(--romantic-orange)' }
+    ];
+    function injectBalloons() {
+      svgBalloons.innerHTML = '';
+      balloonSVGs.forEach((b, i) => {
+        svgBalloons.innerHTML += `
+        <svg class="" data-index="${i}" viewBox="0 0 90 160">
+          <ellipse cx="45" cy="60" rx="38" ry="55" fill="${b.color}" filter="url(#shadow${i})"/>
+          <ellipse cx="35" cy="45" rx="10" ry="18" fill="#fff" opacity="0.18"/>
+          <ellipse cx="55" cy="70" rx="7" ry="10" fill="#fff" opacity="0.10"/>
+          <rect x="41" y="110" width="8" height="18" rx="4" fill="#b5651d"/>
+          <path d="M45 128 Q50 140 35 150 Q60 155 45 128" stroke="#b5651d" stroke-width="2" fill="none"/>
+          <defs>
+            <filter id="shadow${i}" x="0" y="0" width="200%" height="200%">
+              <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#000" flood-opacity="0.15"/>
+            </filter>
+          </defs>
+        </svg>
+        `;
+      });
+    }
+
+    // Hearts animation
+    function createHearts() {
+      for (let i = 0; i < 18; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.style.left = `${Math.random() * 100}vw`;
+        heart.style.animationDelay = `${Math.random() * 4}s`;
+        heart.innerHTML = `<div class="heart-shape"></div>`;
+        hearts.appendChild(heart);
+      }
+    }
+
+    // Confetti animation
+    function createConfetti() {
+      for (let i = 0; i < 60; i++) {
+        const piece = document.createElement('div');
+        piece.className = 'confetti-piece';
+        piece.style.left = `${Math.random() * 100}vw`;
+        piece.style.top = `${Math.random() * 10}vh`;
+        piece.style.background = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+        piece.style.animationDuration = `${3 + Math.random() * 2}s`;
+        piece.style.animationDelay = `${Math.random() * 4}s`;
+        confetti.appendChild(piece);
+      }
+    }
+
+    // Sparkles
+    function createSparkles() {
+      for (let i = 0; i < 30; i++) {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle';
+        sparkle.style.left = `${Math.random() * 100}vw`;
+        sparkle.style.top = `${Math.random() * 100}vh`;
+        sparkle.style.animationDelay = `${Math.random() * 2}s`;
+        document.body.appendChild(sparkle);
+      }
+    }
+
+    turnOnBtn.addEventListener('click', () => {
+      document.body.style.background = "linear-gradient(135deg, var(--romantic-bg) 70%, var(--romantic-pink) 100%)";
+      turnOnBtn.classList.add('hidden');
+      decorateBtn.classList.remove('hidden');
+    });
+
+    decorateBtn.addEventListener('click', () => {
+      decorations.classList.remove('hidden');
+      decorateBtn.classList.add('hidden');
+      celebrateBtn.classList.remove('hidden');
+      injectBalloons();
+      createConfetti();
+      createHearts();
+      createSparkles();
+    });
+
+    // Typewriter effect
+    function typeWriterEffect(text, element, speed = 70, callback) {
+      element.textContent = '';
+      element.style.width = text.length + "ch";
+      element.style.opacity = 1;
+      element.style.borderRight = '3px solid var(--romantic-pink)';
+      let i = 0;
+      function type() {
+        if (i <= text.length) {
+          element.textContent = text.slice(0, i);
+          i++;
+          setTimeout(type, speed);
+        } else {
+          element.style.borderRight = 'none';
+          if (callback) callback();
+        }
+      }
+      type();
+    }
+
+    celebrateBtn.addEventListener('click', () => {
+      celebrateBtn.classList.add('hidden');
+      typewriterMessage.classList.remove('hidden');
+      typewriterMessage.style.opacity = 1;
+      typewriterMessage.style.width = "0";
+      typeWriterEffect("Happy Birthday Muskan 🎂💖  ", typewriterMessage, 70, () => {
+        surpriseBtn.classList.remove('hidden');
+      });
+    });
+
+    // Balloons split animation and personal message typewriter
+    function splitBalloonsAndShowMessage() {
+      // Hide surprise button
+      surpriseBtn.classList.add('hidden');
+
+      // Evenly distribute balloons to both sides (alternate left/right)
+      svgBalloons.classList.add('split');
+      const svgs = svgBalloons.querySelectorAll('svg');
+      svgs.forEach((svg, idx) => {
+        svg.classList.remove('left', 'right');
+        if (idx % 2 === 0) {
+          svg.classList.add('left');
+        } else {
+          svg.classList.add('right');
+        }
+      });
+
+      // Play music automatically (should work after user gesture)
+      bdayMusic.currentTime = 0;
+      bdayMusic.play().catch(()=>{});
+
+      // Show personal message in center with slower typewriter effect
+      const msg = "Happy Birthday to someone incredibly special 💖✨ Though we haven’t known each other for long, you’ve captured my heart in a way I never expected. Your smile, your vibe, your presence—everything about you feels so warm and genuine. I’m truly grateful our paths crossed, and I hope this birthday marks the beginning of a beautiful year for you. Wishing you all the happiness in the world… and maybe a little space in your heart for someone who already cares a lot about you. 🎂🌸💫";
+      personalMessage.textContent = '';
+      personalMessage.classList.remove('hidden');
+      personalMessage.style.opacity = 1;
+      let i = 0;
+      function typePersonal() {
+        if (i <= msg.length) {
+          personalMessage.textContent = msg.slice(0, i);
+          i++;
+          setTimeout(typePersonal, 65); // slower pace
+        } else {
+          cakeBtnContainer.classList.remove('hidden');
+          cakeBtn.style.opacity = 1;
+        }
+      }
+      // Wait for balloon animation to finish before starting message
+      setTimeout(typePersonal, 2600);
+    }
+
+    surpriseBtn.addEventListener('click', splitBalloonsAndShowMessage);
+
+    // Optional: Add a little bounce to the buttons
+    [celebrateBtn, surpriseBtn, cakeBtn].forEach(btn => {
+      btn.addEventListener('mouseover', () => {
+        btn.style.transform = 'scale(1.08)';
+      });
+      btn.addEventListener('mouseout', () => {
+        btn.style.transform = '';
+      });
+    });
+
+    // SVG for cake with candle (unlit and lit) and optional knife and animated cut
+    const cakeSVG = (lit = false, cut = false, knife = false, knifePos = 0, cutProgress = 0) => `
+      <svg width="260" height="220" viewBox="0 0 260 220">
+        <!-- Cake base -->
+        <ellipse cx="130" cy="170" rx="70" ry="22" fill="#eab676"/>
+        <rect x="60" y="90" width="140" height="80" rx="30" fill="#fff0e6" stroke="#eab676" stroke-width="3"/>
+        <ellipse cx="130" cy="90" rx="70" ry="22" fill="#eab676"/>
+        <ellipse cx="130" cy="90" rx="70" ry="22" fill="#fff0e6" opacity="0.7"/>
+        <!-- Cake icing -->
+        <path d="M60 110 Q80 120 100 110 Q120 100 140 110 Q160 120 180 110 Q200 100 200 110 L200 130 Q180 140 160 130 Q140 120 120 130 Q100 140 80 130 Q60 120 60 130 Z"
+          fill="#ffb6d5" opacity="0.7"/>
+        <!-- Candle -->
+        <rect x="124" y="55" width="12" height="35" rx="6" fill="#ffe066" stroke="#b5651d" stroke-width="2"/>
+        <!-- Candle flame (if lit) -->
+        ${lit ? `
+          <ellipse cx="130" cy="52" rx="7" ry="13" fill="gold" filter="url(#glow)"/>
+          <ellipse cx="130" cy="52" rx="3" ry="6" fill="#fffbe6" opacity="0.7"/>
+          <defs>
+            <filter id="glow" x="0" y="0" width="260" height="220">
+              <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+              <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+        ` : ''}
+        <!-- Cake cut animation (progressive cut) -->
+        ${cutProgress > 0 ? `
+          <path d="M130 70 L130 ${70 + 100 * cutProgress}" stroke="#d7263d" stroke-width="10" stroke-linecap="round" filter="url(#cutShadow)"/>
+          <defs>
+            <filter id="cutShadow" x="0" y="0" width="200%" height="200%">
+              <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.3"/>
+            </filter>
+          </defs>
+        ` : ''}
+        <!-- Cake slice (after full cut) -->
+        ${cut === 'slice' ? `
+          <!-- Make the slice stand out: move it out and add a shadow -->
+          <g>
+            <polygon points="130,120 145,155 115,155" fill="#fff0e6" stroke="#eab676" stroke-width="3" filter="url(#sliceShadow)"/>
+            <polygon points="130,120 145,155 115,155" fill="none" stroke="#d7263d" stroke-width="2" opacity="0.7"/>
+            <defs>
+              <filter id="sliceShadow" x="0" y="0" width="200%" height="200%">
+                <feDropShadow dx="0" dy="6" stdDeviation="4" flood-color="#000" flood-opacity="0.25"/>
+              </filter>
+            </defs>
+          </g>
+        ` : ''}
+        <!-- Knife animation (if knife) -->
+        ${knife ? `
+          <g style="transform:translateY(${knifePos}px) rotate(-18deg); transform-origin:185px 60px;">
+            <!-- Knife blade with outline -->
+            <rect x="178" y="60" width="14" height="70" rx="7" fill="#e0e0e0" stroke="#888" stroke-width="2"/>
+            <rect x="178" y="60" width="14" height="70" rx="7" fill="none" stroke="#444" stroke-width="1.5" opacity="0.5"/>
+            <!-- Knife edge highlight -->
+            <rect x="188" y="60" width="2" height="70" rx="1" fill="#fff" opacity="0.5"/>
+            <!-- Knife tip -->
+            <polygon points="182,130 190,130 186,150" fill="#b0b0b0" stroke="#888" stroke-width="1"/>
+            <!-- Knife handle -->
+            <rect x="178" y="45" width="14" height="20" rx="7" fill="#a0522d" stroke="#6b3a1e" stroke-width="2"/>
+            <!-- Handle highlight -->
+            <rect x="188" y="45" width="2" height="20" rx="1" fill="#fff" opacity="0.3"/>
+          </g>
+        ` : ''}
+      </svg>
+    `;
+
+    // Show cake and candle (replace message, show button at bottom)
+    cakeBtn.addEventListener('click', () => {
+      personalMessage.classList.add('hidden'); // Hide message to create space for cake
+      document.getElementById('cakeScene').classList.remove('hidden');
+      document.getElementById('cakeSvgContainer').innerHTML = cakeSVG(false, false);
+      document.getElementById('finalMsg').classList.add('hidden');
+      // Remove the cake button from the DOM after displaying the cake
+      cakeBtn.parentNode.removeChild(cakeBtn);
+      // Show "Light the Candle" button at the same place
+      document.getElementById('lightCandleBtn').classList.remove('hidden');
+      document.getElementById('cutCakeBtn').classList.add('hidden');
+    });
+
+    // Light the candle (replace button at bottom)
+    document.getElementById('lightCandleBtn').addEventListener('click', () => {
+      document.getElementById('cakeSvgContainer').innerHTML = cakeSVG(true, false);
+      document.getElementById('lightCandleBtn').classList.add('hidden');
+      // Show "Cut the Cake" button styled like other buttons
+      document.getElementById('cutCakeBtn').classList.remove('hidden');
+    });
+
+    // Animate knife cutting the cake, then show final message
+    document.getElementById('cutCakeBtn').addEventListener('click', () => {
+      document.getElementById('cutCakeBtn').classList.add('hidden');
+      let knifePos = -60;
+      let cutProgress = 0;
+      const svgContainer = document.getElementById('cakeSvgContainer');
+      // Animate knife moving down
+      function animateKnife() {
+        svgContainer.innerHTML = cakeSVG(true, false, true, knifePos, 0);
+        if (knifePos < 60) {
+          knifePos += 10;
+          setTimeout(animateKnife, 60);
+        } else {
+          // Animate the cut line
+          animateCutLine();
+        }
+      }
+      // Animate the cut line down the cake
+      function animateCutLine() {
+        svgContainer.innerHTML = cakeSVG(true, false, false, 0, cutProgress);
+        if (cutProgress < 1) {
+          cutProgress += 0.08;
+          setTimeout(animateCutLine, 60);
+        } else {
+          // Show the slice after the cut
+          svgContainer.innerHTML = cakeSVG(true, 'slice', false, 0, 1);
+          setTimeout(() => {
+            showFinalMsg();
+          }, 900);
+        }
+      }
+      animateKnife();
+    });
+
+    // Final message
+    function showFinalMsg() {
+      const finalMsg = document.getElementById('finalMsg');
+      finalMsg.textContent = "With love, from your secret admirer. Enjoy your day to the fullest! 🎉 ";
+      finalMsg.classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>
